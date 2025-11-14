@@ -1,0 +1,4 @@
+west:
+  command: C:\Users\Jaque\AppData\Roaming\Python\Python313\Scripts\west build -b samr21_xpro
+  topdir: C:\my-workspace
+  version: 1.5.0

@@ -1,0 +1,58 @@
+cmake:
+  application:
+    configuration-dir: 'C:/my-workspace/zephyr-app-ufsm00292/AppJaqueline'
+    source-dir: 'C:/my-workspace/zephyr-app-ufsm00292/AppJaqueline'
+  board:
+    name: 'samr21_xpro'
+    path:
+     - 'C:/my-workspace/zephyr/boards/atmel/sam0/samr21_xpro'
+    qualifiers: 'samr21g18a'
+    revision: ''
+  devicetree:
+    bindings-dirs:
+     - 'C:/my-workspace/zephyr/dts/bindings'
+    files:
+     - 'C:/my-workspace/zephyr/boards/atmel/sam0/samr21_xpro/samr21_xpro.dts'
+    include-dirs:
+     - 'C:/my-workspace/modules/hal/ambiq/dts'
+     - 'C:/my-workspace/modules/hal/atmel/include'
+     - 'C:/my-workspace/modules/hal/bouffalolab/include'
+     - 'C:/my-workspace/modules/hal/bouffalolab/include/zephyr'
+     - 'C:/my-workspace/modules/hal/gigadevice/include'
+     - 'C:/my-workspace/modules/hal/microchip/include'
+     - 'C:/my-workspace/modules/hal/microchip/dts'
+     - 'C:/my-workspace/modules/hal/nuvoton/dts'
+     - 'C:/my-workspace/modules/hal/nxp/dts'
+     - 'C:/my-workspace/modules/hal/stm32/dts'
+     - 'C:/my-workspace/modules/hal/ti/dts'
+     - 'C:/my-workspace/zephyr/include'
+     - 'C:/my-workspace/zephyr/include/zephyr'
+     - 'C:/my-workspace/zephyr/dts/common'
+     - 'C:/my-workspace/zephyr/dts/vendor'
+     - 'C:/my-workspace/zephyr/dts/rx'
+     - 'C:/my-workspace/zephyr/dts/x86'
+     - 'C:/my-workspace/zephyr/dts/xtensa'
+     - 'C:/my-workspace/zephyr/dts/sparc'
+     - 'C:/my-workspace/zephyr/dts/riscv'
+     - 'C:/my-workspace/zephyr/dts/posix'
+     - 'C:/my-workspace/zephyr/dts/arm64'
+     - 'C:/my-workspace/zephyr/dts/arm'
+     - 'C:/my-workspace/zephyr/dts/arc'
+     - 'C:/my-workspace/zephyr/dts'
+  kconfig:
+    files:
+     - 'C:/my-workspace/zephyr/boards/atmel/sam0/samr21_xpro/samr21_xpro_defconfig'
+     - 'C:/my-workspace/zephyr-app-ufsm00292/AppJaqueline/prj.conf'
+    user-files:
+     - 'C:/my-workspace/zephyr-app-ufsm00292/AppJaqueline/prj.conf'
+  toolchain:
+    name: 'gnuarmemb'
+    path: 'C:/Users/Jaque/Downloads/arm-gnu-toolchain-14.3.rel1-mingw-w64-i686-arm-none-eabi'
+  zephyr:
+    version: '4.2.99'
+    zephyr-base: 'C:/my-workspace/zephyr'
+version: '0.1.0'
+west:
+  command: 'C:\Users\Jaque\AppData\Roaming\Python\Python313\Scripts\west build -b samr21_xpro'
+  topdir: 'C:\my-workspace'
+  version: '1.5.0'

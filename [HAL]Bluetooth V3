@@ -1,0 +1,37 @@
+🗓️ Semana 5: Otimização de Consumo de Energia (Power Management)
+Foco: O build inicial funciona, mas o host (SAMD21) nunca entra em modo de baixo consumo. Ele permanece no loop de idle (k_cpu_idle), drenando energia. Esta semana foi dedicada a habilitar o Power Management (PM) do Zephyr.
+
+2.1. Diagnóstico do Problema
+Medições de corrente (não realizadas, mas presumidas) mostrariam um consumo muito alto para uma aplicação BLE, pois o Cortex-M0+ (SAMD21) está sempre ativo, mesmo quando não há tráfego BLE.
+
+2.2. Solução: Zephyr Power Management & Device PM
+A SAMD21 suporta múltiplos estados de sono (Sleep States). O Zephyr pode gerenciar isso automaticamente.
+
+Modificações no prj.conf:
+
+Snippet de código
+
+# --- CONFIGS DE POWER MANAGEMENT (Semana 2) ---
+
+# Habilita o framework de Power Management global
+CONFIG_PM=y
+
+# Habilita o gerenciamento de energia em nível de dispositivo (ex: UART, SPI)
+CONFIG_PM_DEVICE=y
+
+# Permite que a política de PM do Zephyr coloque o sistema em sleep
+CONFIG_PM_SYSTEM_SLEEP=y
+2.3. O Desafio: Periféricos Ativos (HCI UART)
+O maior "pega-ratão" é este: o sistema não pode dormir se um periférico estiver ativo. No nosso caso, o SERCOM4 (HCI UART) está sempre ativo, esperando dados do BTLC1000.
+
+Pesquisa: O driver atmel,sam0-uart precisa suportar a API de device_pm_control. Quando o Zephyr decide dormir, ele primeiro pergunta a todos os drivers se eles podem entrar em modo de baixo consumo.
+
+Problema: O SERCOM4 (UART) não pode dormir, pois é a nossa linha de vida para o rádio BLE.
+
+Solução (Parcial): O BTLC1000 (controlador) gerencia seu próprio sleep. O host (SAMD21) pode dormir desde que o BTLC1000 possa acordá-lo.
+
+Implementação Futura (Necessária): Seria preciso usar a linha RTS/CTS (flow control) não apenas para dados, mas como um sinal de wake-up. O BTLC1000 (via sua linha RTS, conectada ao CTS do SAMD21) precisaria acordar o SAMD21 (via interrupção de pino) antes de enviar dados HCI.
+
+Correção Imediata (Simples): Habilitar CONFIG_UART_SAM0_PM_ENABLE (se disponível no driver) para permitir que o driver UART participe do gerenciamento de energia.
+
+Resultado: Habilitar CONFIG_PM é o primeiro passo. A otimização real requer uma integração mais profunda entre o estado de sono do BTLC1000 e a capacidade de wake-up do SAMD21, provavelmente usando uma interrupção de GPIO (no pino CTS) para acordar o host.

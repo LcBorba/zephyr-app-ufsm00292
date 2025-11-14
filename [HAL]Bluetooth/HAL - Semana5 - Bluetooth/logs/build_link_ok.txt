@@ -1,0 +1,8 @@
+-- west build: building application
+[1/276] Generating include/generated/zephyr/version.h
+-- Zephyr version: 4.2.99 (C:/Users/angel/zephyrproject/zephyr), build: v4.2.0-4841-gbbe4a064c8ff
+[276/276] Linking C executable zephyr\zephyr.elf
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       80864 B       256 KB     30.85%
+             RAM:       19748 B        32 KB     60.27%
+        IDT_LIST:          0 GB        32 KB      0.00%

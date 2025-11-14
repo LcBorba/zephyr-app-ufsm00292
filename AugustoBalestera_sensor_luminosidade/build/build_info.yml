@@ -1,0 +1,58 @@
+cmake:
+  application:
+    configuration-dir: '/home/balestera/zephyrproject/zephyr-app-ufsm00292-Aplica-o/AugustoBalestera_sensor_luminosidade'
+    source-dir: '/home/balestera/zephyrproject/zephyr-app-ufsm00292-Aplica-o/AugustoBalestera_sensor_luminosidade'
+  board:
+    name: 'qemu_x86'
+    path:
+     - '/home/balestera/zephyrproject/zephyr/boards/qemu/x86'
+    qualifiers: 'atom'
+    revision: ''
+  devicetree:
+    bindings-dirs:
+     - '/home/balestera/zephyrproject/zephyr/dts/bindings'
+    files:
+     - '/home/balestera/zephyrproject/zephyr/boards/qemu/x86/qemu_x86.dts'
+    include-dirs:
+     - '/home/balestera/zephyrproject/modules/hal/ambiq/dts'
+     - '/home/balestera/zephyrproject/modules/hal/atmel/include'
+     - '/home/balestera/zephyrproject/modules/hal/bouffalolab/include'
+     - '/home/balestera/zephyrproject/modules/hal/bouffalolab/include/zephyr'
+     - '/home/balestera/zephyrproject/modules/hal/gigadevice/include'
+     - '/home/balestera/zephyrproject/modules/hal/microchip/include'
+     - '/home/balestera/zephyrproject/modules/hal/microchip/dts'
+     - '/home/balestera/zephyrproject/modules/hal/nuvoton/dts'
+     - '/home/balestera/zephyrproject/modules/hal/nxp/dts'
+     - '/home/balestera/zephyrproject/modules/hal/stm32/dts'
+     - '/home/balestera/zephyrproject/modules/hal/ti/dts'
+     - '/home/balestera/zephyrproject/zephyr/include'
+     - '/home/balestera/zephyrproject/zephyr/include/zephyr'
+     - '/home/balestera/zephyrproject/zephyr/dts/common'
+     - '/home/balestera/zephyrproject/zephyr/dts/vendor'
+     - '/home/balestera/zephyrproject/zephyr/dts/rx'
+     - '/home/balestera/zephyrproject/zephyr/dts/x86'
+     - '/home/balestera/zephyrproject/zephyr/dts/xtensa'
+     - '/home/balestera/zephyrproject/zephyr/dts/sparc'
+     - '/home/balestera/zephyrproject/zephyr/dts/riscv'
+     - '/home/balestera/zephyrproject/zephyr/dts/posix'
+     - '/home/balestera/zephyrproject/zephyr/dts/arm64'
+     - '/home/balestera/zephyrproject/zephyr/dts/arm'
+     - '/home/balestera/zephyrproject/zephyr/dts/arc'
+     - '/home/balestera/zephyrproject/zephyr/dts'
+  kconfig:
+    files:
+     - '/home/balestera/zephyrproject/zephyr/boards/qemu/x86/qemu_x86_defconfig'
+     - '/home/balestera/zephyrproject/zephyr-app-ufsm00292-Aplica-o/AugustoBalestera_sensor_luminosidade/prj.conf'
+    user-files:
+     - '/home/balestera/zephyrproject/zephyr-app-ufsm00292-Aplica-o/AugustoBalestera_sensor_luminosidade/prj.conf'
+  toolchain:
+    name: 'zephyr'
+    path: '/home/balestera/zephyr-sdk-0.17.0'
+  zephyr:
+    version: '4.3.0-rc1'
+    zephyr-base: '/home/balestera/zephyrproject/zephyr'
+version: '0.1.0'
+west:
+  command: '/home/balestera/zephyrproject/zephyr-venv/bin/west build -b qemu_x86 --pristine'
+  topdir: '/home/balestera/zephyrproject'
+  version: '1.5.0'

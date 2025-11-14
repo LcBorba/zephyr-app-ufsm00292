@@ -1,0 +1,78 @@
+🗓️ Semana 4: Implementação de Segurança (Pairing & Bonding)
+Foco: O sample peripheral_nus padrão é inseguro. Ele usa "Just Works" pairing, que não oferece proteção contra ataques Man-in-the-Middle (MITM). Esta semana foi dedicada a implementar um link seguro.
+
+1.1. Diagnóstico do Problema
+Por padrão, qualquer smartphone pode se conectar, ler e escrever na característica NUS sem autenticação. Para um produto real, isso é inaceitável.
+
+1.2. Solução: Zephyr Security Manager (SMP)
+A solução foi habilitar o SMP (Security Manager Protocol) do Zephyr para forçar a autenticação antes de permitir o acesso aos serviços.
+
+Modificações no prj.conf:
+
+Adicionamos as seguintes configurações de Kconfig para habilitar o SMP e exigir segurança:
+
+Snippet de código
+
+# --- CONFIGS DE SEGURANÇA (Semana 1) ---
+
+# Habilita o Security Manager Protocol (SMP)
+CONFIG_BT_SMP=y
+
+# Exige que a conexão seja segura (autenticada e criptografada)
+# Isso impede que clientes leiam/escrevam antes do pairing
+CONFIG_BT_PERIPHERAL_SEC_REQUIRED=y
+
+# Habilita o armazenamento de chaves (Bonding)
+# Permite que o device lembre de um celular pareado
+CONFIG_BT_SETTINGS=y
+CONFIG_FLASH=y
+CONFIG_FLASH_PAGE_LAYOUT=y
+CONFIG_FLASH_MAP=y
+CONFIG_NVS=y
+CONFIG_SETTINGS_NVS_STATISTICS=y
+CONFIG_SETTINGS_NVS=y
+
+# Define as capacidades de I/O (ex: se temos tela ou teclado)
+# Para um device "headless" (como o Xplained Pro), usamos "NoInputNoOutput"
+# Isso força o "Just Works", mas agora com criptografia (ainda vulnerável a MITM)
+# MUDAR PARA: CONFIG_BT_SMP_IO_CAP_DISPLAY_ONLY se tiver um console para mostrar um PIN
+CONFIG_BT_SMP_IO_CAP_NO_INPUT_NO_OUTPUT=y
+1.3. Implementação dos Callbacks de Autenticação
+Para gerenciar o processo de pairing e bonding, registramos callbacks de conexão no main.c:
+
+Modificações no main.c:
+
+C
+
+/* ... includes ... */
+
+/* Callback para mostrar o status da segurança */
+static void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
+{
+    char addr[BT_ADDR_LE_STR_LEN];
+    bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+
+    if (!err) {
+        printk("Security changed: %s level %u\n", addr, level);
+    } else {
+        printk("Security failed: %s level %u err %d\n", addr, level, err);
+    }
+}
+
+/* Estrutura de callbacks de conexão */
+static struct bt_conn_cb conn_callbacks = {
+    /* ... outros callbacks como connected/disconnected ... */
+    .security_changed = security_changed,
+};
+
+/* Na função main() */
+int main(void)
+{
+    /* ... inicialização do BLE (bt_enable) ... */
+
+    // Registrar nossos callbacks de segurança
+    bt_conn_cb_register(&conn_callbacks);
+
+    /* ... resto do código ... */
+}
+Resultado: A conexão agora é criptografada. Um app não consegue mais usar o serviço NUS "de graça". O próximo passo (ainda não implementado) seria usar CONFIG_BT_SMP_IO_CAP_DISPLAY_ONLY e um callback auth_passkey_display para mostrar um PIN no console serial (EDBG), implementando uma proteção real contra MITM.

@@ -1,0 +1,29 @@
+# Available runners configured by board.cmake.
+runners:
+- custom
+
+# Default flash runner if --runner is not given.
+flash-runner: custom
+
+# Common runner configuration values.
+config:
+  board_dir: C:/my-workspace/zephyr/boards/atmel/sam0/samr21_xpro
+  # Build outputs:
+  elf_file: zephyr.elf
+  hex_file: zephyr.hex
+  bin_file: zephyr.bin
+  # Host tools:
+  gdb: C:/Users/Jaque/Downloads/arm-gnu-toolchain-14.3.rel1-mingw-w64-i686-arm-none-eabi/bin/arm-none-eabi-gdb.exe
+
+# Runner specific arguments
+args:
+  custom:
+    - COMMAND
+    - C:/Downloads/edbg-windows/edbg.exe
+    - -t
+    - atmel_cm0p
+    - -p
+    - COM3
+    - -f
+    - C:/my-workspace/zephyr-app-ufsm00292/AppJaqueline/build/zephyr/zephyr.bin
+    - -r

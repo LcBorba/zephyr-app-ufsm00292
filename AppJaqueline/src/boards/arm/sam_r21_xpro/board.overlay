@@ -1,0 +1,129 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/i2c/i2c.h>
+
+/ {
+    chosen {
+        zephyr,console = &sercom0;
+        zephyr,shell-uart = &sercom0;
+        zephyr,sram = &sram0;
+        zephyr,flash = &flash0;
+        zephyr,code-partition = &code_partition;
+    };
+
+    /* === I2C - SERCOM1 === */
+    &sercom1 {
+        status = "okay";
+        compatible = "atmel,sam0-i2c";
+        label = "I2C_1";
+        clock-frequency = <I2C_BITRATE_FAST>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        /* Mapeamento físico dos pinos */
+        pinctrl-0 = <&sercom1_i2c_pins>;
+        pinctrl-names = "default";
+
+        /* Sensores */
+        bno055: bno055@28 {
+            compatible = "bosch,bno055";
+            reg = <0x28>;
+            label = "BNO055";
+            status = "okay";
+        };
+
+        tls2561: tls2561@39 {
+            compatible = "ams,tls2561";
+            reg = <0x39>;
+            label = "TLS2561";
+            status = "okay";
+        };
+
+        tmp102: tmp102@48 {
+            compatible = "ti,tmp102";
+            reg = <0x48>;
+            label = "TMP102";
+            status = "okay";
+        };
+    };
+
+    /* Definição dos pinos para SERCOM1 */
+    pinctrl {
+        sercom1_i2c_pins: sercom1_i2c_pins {
+            group1 {
+                pinmux = <SAM0_PINMUX('A', 16, MUX_C)>; /* SDA - PA16 */
+            };
+            group2 {
+                pinmux = <SAM0_PINMUX('A', 17, MUX_C)>; /* SCL - PA17 */
+            };
+        };
+    };
+
+    /* UART */
+    &sercom0 {
+        status = "okay";
+        compatible = "atmel,sam0-uart";
+        current-speed = <115200>;
+    };
+
+    &ieee802154 {
+        status = "okay";
+    };
+
+    aliases {
+        led0 = &led0;
+        led1 = &led1;
+    };
+
+    leds {
+        compatible = "gpio-leds";
+        led0: led_0 {
+            gpios = <&porta 19 GPIO_ACTIVE_HIGH>;
+            label = "LED 0";
+        };
+        led1: led_1 {
+            gpios = <&porta 18 GPIO_ACTIVE_HIGH>;
+            label = "LED 1";
+        };
+    };
+
+    buttons {
+        compatible = "gpio-keys";
+        button0: button_0 {
+            gpios = <&porta 16 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button 0";
+        };
+        button1: button_1 {
+            gpios = <&porta 17 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+            label = "Button 1";
+        };
+    };
+};
+
+/* Flash partitions */
+&flash0 {
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        boot_partition: partition@0 {
+            label = "bootloader";
+            reg = <0x00000000 0x2000>;
+            read-only;
+        };
+
+        code_partition: partition@2000 {
+            label = "code";
+            reg = <0x2000 0x3A000>;
+            read-only;
+        };
+
+        storage_partition: partition@3C000 {
+            label = "storage";
+            reg = <0x3C000 0x4000>;
+        };
+    };
+};

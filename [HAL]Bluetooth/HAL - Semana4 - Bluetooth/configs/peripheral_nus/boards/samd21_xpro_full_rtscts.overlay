@@ -1,0 +1,27 @@
+/ {
+    chosen {
+        zephyr,bt-hci = &bt_hci_uart;
+        /* opcional:
+         * zephyr,console = &sercom3;
+         */
+    };
+};
+
+/* SERCOM4 como UART com RTS/CTS a 1 Mbit/s (requer fiação CTS/RTS) */
+&sercom4 {
+    compatible = "atmel,sam0-uart";
+    status = "okay";
+
+    /* RX em PAD1 (PB09) => rxpo = 1
+     * TX+RTS+CTS mapeados => txpo = 2 (TX=PAD0, RTS=PAD2/PB10, CTS=PAD3/PB11)
+     */
+    rxpo = <1>;
+    txpo = <2>;
+    current-speed = <1000000>;
+    hw-flow-control;
+
+    bt_hci_uart: bt_hci_uart {
+        compatible = "zephyr,bt-hci-uart";
+        status = "okay";
+    };
+};

@@ -1,0 +1,13 @@
+/* SAMD21 Xplained Pro: SERCOM4 como UART para HCI (BTLC1000) - 115200, sem RTS/CTS */
+&sercom4 {
+    status = "okay";
+    compatible = "atmel,sam0-uart";
+    current-speed = <115200>;
+    /* Mapeamento de pinos do SERCOM USART:
+     * rxpo: 1 = RX em PAD1
+     * txpo: 0 = TX em PAD0
+     */
+    rxpo = <1>;
+    txpo = <0>;
+    /* Sem hardware flow control */
+};

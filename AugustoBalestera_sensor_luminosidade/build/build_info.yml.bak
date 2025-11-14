@@ -1,0 +1,4 @@
+west:
+  command: /home/balestera/zephyrproject/zephyr-venv/bin/west build -b qemu_x86 --pristine
+  topdir: /home/balestera/zephyrproject
+  version: 1.5.0

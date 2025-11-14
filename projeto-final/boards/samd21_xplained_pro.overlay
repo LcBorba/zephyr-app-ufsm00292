@@ -1,0 +1,17 @@
+/*
+ * Device Tree overlay para sensor AT30TSE752A na SAM D21 Xplained Pro
+ * Semana 6 - Integração completa
+ * PLACA: SAM D21 (ARM Cortex-M0+)
+ */
+
+&i2c0 {
+	status = "okay";
+	
+	/* Sensor de temperatura AT30TSE752A no endereço 0x49 */
+	temperature_sensor: at30tse752a@49 {
+		compatible = "microchip,at30tse752a";
+		reg = <0x49>;
+		status = "okay";
+		label = "TEMP_SENSOR";
+	};
+};

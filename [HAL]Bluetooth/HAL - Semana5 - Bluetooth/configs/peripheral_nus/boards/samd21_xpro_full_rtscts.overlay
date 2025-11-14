@@ -1,0 +1,11 @@
+/* Exemplo: SERCOM4 como UART para HCI (BTLC1000) - 1Mbaud, COM RTS/CTS
+ * ATENÇÃO: Ajuste pinos no seu hardware real (TXPO/RXPO e padmux dos sinais RTS/CTS se necessário).
+ */
+&sercom4 {
+    status = "okay";
+    compatible = "atmel,sam0-uart";
+    current-speed = <1000000>;
+    rxpo = <1>;
+    txpo = <2>; /* Exemplo de TX em PAD2 (verificar no seu layout) */
+    hw-flow-control;
+};

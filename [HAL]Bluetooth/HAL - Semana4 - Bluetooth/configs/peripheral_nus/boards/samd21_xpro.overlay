@@ -1,0 +1,26 @@
+/ {
+    chosen {
+        zephyr,bt-hci = &bt_hci_uart;
+        /* opcional: manter console via USB/EDBG
+         * zephyr,console = &sercom3;
+         */
+    };
+};
+
+/* SERCOM4 em modo UART (EXT1), sem RTS/CTS, 115200 bps */
+&sercom4 {
+    compatible = "atmel,sam0-uart";
+    status = "okay";
+
+    /* RX em PAD1 (PB09) => rxpo = 1
+     * TX em PAD0 (PB08) => txpo = 0
+     */
+    rxpo = <1>;
+    txpo = <0>;
+    current-speed = <115200>;
+
+    bt_hci_uart: bt_hci_uart {
+        compatible = "zephyr,bt-hci-uart";
+        status = "okay";
+    };
+};
