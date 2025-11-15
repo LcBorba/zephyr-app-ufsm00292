@@ -60,3 +60,9 @@ Estrutura do código:
  │
  └── Fim do Programa
 
+
+
+ 14/11
+ Implementação lógica do main (sem integração)
+
+
